@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--
+    2024-09-30
+    Auteur: Mikael Rousseau
+-->
+<html lang="fr">
+    <head>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src='./waterTank.js'></script>
+    </head>
+    <body class="container">
+        <main>
+            <div>
+                <h1>Water Tank</h1>
+                <br>
+                <div id="tank101"></div>
+            </div>
+        </main>
+
+        <script>
+          $(document).ready(function() {
+            const height = 200;
+
+            let tank101 = new WaterTank({
+                tank: 'tank101',
+                width: 100,
+                height: height,
+                color1: 'blue',
+                color2: 'red',
+                level1: 50,
+                level2: 30,
+            })
+
+            let isDragging = false;
+
+            $('#tank101').on('mousedown', function(event) {
+                isDragging = true;
+                updateLevel(event);
+            });
+
+            $(document).on('mouseup', function() {
+                isDragging = false;
+            });
+
+            $('#tank101').on('mousemove', function(event) {
+                if (isDragging)
+                    updateLevel(event);
+            });
+
+            function updateLevel(event) {
+                    var offset = $('#tank101').offset();
+                    var clickY = event.pageY - offset.top - 25;
+                    let value = (height - clickY) / height * 100;
+                    if (value < 0) value = 0;
+                    if (value > 100) value = 100;
+                    tank101.setLevel1(value);
+                    tank101.setLevel2(value);
+            }
+          });
+          </script>
+    
+    </body>
+</html>
